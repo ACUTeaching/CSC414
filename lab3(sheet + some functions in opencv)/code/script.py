@@ -188,7 +188,7 @@ Note: ravel does what the reshape(-1) do (turning the array into 1D)
 """   
 
 iterating over the image of zeroes and at each ith row position and from 0:9 columns we set the values to 
-the changing variable x which changes by 50 each time just to make the same frequency for each element in the x axis. 
+the changing variable increaseBy which changes by 50 each time just to make the same frequency for each element in the x axis. 
 
 """
 
