@@ -1,0 +1,448 @@
+* steps for compression : 
+	o first of all you have a dictionary that the sender and the reciever have agreed upon it and it's basically contains the different characters of your data and a code for each one the code can be the ASCII code for the character.
+	o second while not end of file we keep reading the input string and we ask the following questions :
+		# is the current character(s) plus the next(c) in the dictionary ?
+			- yes :
+				* then s equals s + c   
+			- no :
+ 				* output the code for the current character(s) from the dictionary.
+ 				* add s + c to the dictionary with a new code.
+ 				* s equals c (the current in the next iteration will be the next)	
+
+
+ 	o output the code for the s (meaning that we reached the end of file and couldn't output the code because the loop has been ended)			
+
+
+
+ 	o in simple words : you keep concatenating characters from input till it's not in the dictionary then you add it to the dictionary and you output the code of the last sequence in the dictionary.
+
+
+
+
+
+* steps for decompression : 
+	o first of all you have a dictionary that the sender and the reciever have agreed upon it and it's basically contains the different characters of your data and a code for each one the code can be the ASCII code for the character.
+
+	o s = NIL 
+		- s is the current string of the compressed output(the code) in the dictionary ex:
+			- A(the string) ,  1(the compressed output or code for A)
+	o k => the compressed output(the code) 
+	o entry => the next string of the compressed output(the code) in the dictionary
+	o while not end of file output the entry and if s not null(not the first iteration) then add the s + entry[0] (first character of next) to the dictionary then s(current) will equal to entry(the next) for the next iteration. 
+
+
+
+	o in simple words : we get the current string for the compressed output and the first character of the next and if it's not in the dictionary we add it and output the string of the current compressed output.
+
+
+
+
+* tricky case of decompression : 
+	o when the compressed output is not in the dictionary you get all symbols picked from previous step
+and first Symbol picked from current step
+
+	o ex : let's say that the current compressed output is 5 and we don't have 5 in dictionary and the previous was 4(AB)
+	then current will be ABA(AB plus first character from current which is A)
+
+
+ A  B  A  B  B  A  B  C  A  B  A  B  B  A
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+
+
+* A in dictionary ? yes. AB in dictionary ?  no stop. then add it to the dictionary with it's code equals to last code + 1 (3 +1) and get the A code value(1)
+
+A  B  A  B  B  A  B  C  A  B  A  B  B  A
+1
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+
+
+* B in dictionary ? yes. BA in dictionary ? no stop. then add it to the dictionary with it's code equals to last code + 1(4 + 1) and get the code value of B (2).
+
+
+A  B  A  B  B  A  B  C  A  B  A  B  B  A
+1  2
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+
+
+* A in dictionary ? yes. AB in dictionary ? yes. ABB in dictionary ? no stop. then add it to the dictionary with it's code equals to last code + 1(5+1) and get the code value of AB(4) 
+
+
+A  B  A  B  B  A  B  C  A  B  A  B  B  A
+      ---- 
+1  2   4
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+
+
+
+* B in dictionary ? yes. BA in dictionary ? yes. BAB in dictionary ? no stop. then add BAB to the dictionary with it's code equals to the last code in dictionary + 1(6+1) and get the last yes question value(BA=> 5) 
+
+
+A  B  A  B  B  A  B  C  A  B  A  B  B  A
+      ----  ----
+1  2   4     5
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+
+* B in dictionary ? yes. BC in dictionary ? no stop.then add BC to the dictionary with it's code equals to the last code in dictionary + 1(7+1) and get the last yes question value(B=> 2) 
+
+
+A  B  A  B  B  A  B  C  A  B  A  B  B  A
+-  -  ----  ----  -  
+1  2   4     5    2
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+
+* C in dictionary ? yes. CA in dictionary ? no stop.then add CA to the dictionary with it's code equals to the last code in dictionary + 1(8+1) and get the last yes question value(C=> 3) 
+
+
+A  B  A  B  B  A  B  C  A  B  A  B  B  A
+-  -  ----  ----  -  -
+1  2   4     5    2  3
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+ CA    9
+
+* A in dictionary ? yes. AB in dictionary ? yes.ABA in dictionary ? no stop.then add ABA to the dictionary with it's code equals to the last code in dictionary + 1(9+1) and get the last yes question value(AB=> 4) 
+
+
+A  B  A  B  B  A  B  C  A  B  A  B  B  A
+-  -  ----  ----  -  -  ----
+1  2   4     5    2  3    4 
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+ CA    9
+ ABA   10
+
+
+
+* A in dictionary ? yes. AB in dictionary ? yes.ABB in dictionary ? yes. ABBA in dictionary ? no stop.then add ABBA to the dictionary with it's code equals to the last code in dictionary + 1(10+1) and get the last yes question value(ABB=> 6) 
+
+
+A  B  A  B  B  A  B  C  A  B  A  B  B  A
+-  -  ----  ----  -  -  ----  -------
+1  2   4     5    2  3    4     6
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+ CA    9
+ ABA   10
+ ABBA  11   
+
+
+* A in dictionary ? yes and it's the end there's no more characters.get the last yes question value(A=> 1) 
+
+A  B  A  B  B  A  B  C  A  B  A  B  B  A
+-  -  ----  ----  -  -  ----  -------  -
+1  2   4     5    2  3    4     6      1
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+ CA    9
+ ABA   10
+ ABBA  11 
+
+
+
+compressed output => 1 2 4 5 2 3 4 6 1
+
+
+
+
+
+
+Decompression : 
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+
+
+1   2   4   5   2   3   4   6   1   
+
+
+
+* does 1 exists in dictionary ? yes. does 1 &  first digit of 2 exists in dictionary(AB) ? no. then add it to the dictionary with last code + 1(3 + 1) and decompress the 1 to become A  
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+
+1   2   4   5   2   3   4   6   1   
+-   
+A   
+
+
+
+* does 2 exists in dictionary ? yes. does 2 & first digit of 4 exists in dictionary(BA) ? no. then add it to the dictionary with last code + 1(4 + 1) and decompress the 2 to become B.  
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+
+1   2   4   5   2   3   4   6   1   
+-   -  
+A   B
+
+
+* does 4 exists in dictionary ? yes. does 4 & first digit of 5 exists in dictionary(ABB) ? no. then add it to the dictionary with last code + 1(5 + 1) and decompress the 4 to become AB.  
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+
+1   2   4   5   2   3   4   6   1   
+-   -   -
+A   B   AB
+
+
+
+* does 5 exists in dictionary ? yes. does 5 & first digit of 2 exists in dictionary(BAB) ? no. then add it to the dictionary with last code + 1(6 + 1) and decompress the 5 to become BA. 
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+
+1   2   4   5   2   3   4   6   1   
+-   -   -   -
+A   B   AB  BA
+
+
+* does 2 exists in dictionary ? yes. does 2 & first digit of 3 exists in dictionary(BC) ? no. then add it to the dictionary with last code + 1(7 + 1) and decompress the 2 to become B. 
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+
+1   2   4   5   2   3   4   6   1   
+-   -   -   -   -
+A   B   AB  BA  B
+
+
+
+* does 3 exists in dictionary ? yes. does 3 & first digit of 4 exists in dictionary(CA) ? no. then add it to the dictionary with last code + 1(8 + 1) and decompress the 3 to become C. 
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+ CA    9
+
+1   2   4   5   2   3   4   6   1   
+-   -   -   -   -   -   
+A   B   AB  BA  B   C
+
+
+
+
+* does 4 exists in dictionary ? yes. does 4 & first digit of 6 exists in dictionary(ABA) ? no. then add it to the dictionary with last code + 1(9 + 1) and decompress the 4 to become AB. 
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+ CA    9
+ ABA    10
+
+1   2   4   5   2   3   4   6   1   
+-   -   -   -   -   -   -
+A   B   AB  BA  B   C   AB
+
+
+* does 6 exists in dictionary ? yes. does 6 & first digit of 1 exists in dictionary(ABBA) ? no. then add it to the dictionary with last code + 1(10 + 1) and decompress the 4 to become ABB. 
+
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+ CA    9
+ ABA    10
+ ABBA   11
+
+1   2   4   5   2   3   4   6   1   
+-   -   -   -   -   -   -   -
+A   B   AB  BA  B   C   AB  ABB
+
+* does 1 exists in dictionary ? yes and it's the end.and decompress the 1 to become A. 
+
+
+Dictionary 
+											 
+char  code
+ A     1
+ B	   2						
+ C	   3
+ AB    4
+ BA    5
+ ABB   6
+ BAB   7
+ BC    8
+ CA    9
+ ABA   10
+ ABBA   11
+
+
+1   2   4   5   2   3   4   6   1   
+
+
+A  B  AB  BA  BC  A  B  A  B  B  A
+
+A   B  AB  BA   B   C   AB  ABB  A
+
+
+
+
+
