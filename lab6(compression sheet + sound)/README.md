@@ -1,1 +1,2 @@
-[video link](https://drive.google.com/file/d/19Gnlpaq_61ODp-CdMhM7prpK5RRsMAOa/view?usp=sharing)
+You can find the [video link](https://drive.google.com/file/d/19Gnlpaq_61ODp-CdMhM7prpK5RRsMAOa/view?usp=sharing) for the compression sheet 
+and here's a [sound link](https://medium.com/better-programming/simple-audio-processing-in-python-with-pydub-c3a217dabf11) for the sound (note: open it from a VPN cause medium.com doesn't work in Egypt)
